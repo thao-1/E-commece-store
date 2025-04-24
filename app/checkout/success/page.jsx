@@ -1,15 +1,24 @@
-// src/app/(main)/checkout/success/page.tsx
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
 export default function CheckoutSuccessPage() {
-  // Generate a random order number for display purposes
-  const orderNumber = `ORD-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`;
+  const [orderNumber, setOrderNumber] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+    // Generate a random order number for display purposes
+    setOrderNumber(`ORD-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`);
+  }, []);
+  
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="container mx-auto max-w-lg px-4 py-16">
@@ -35,10 +44,14 @@ export default function CheckoutSuccessPage() {
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
           <Link href="/user/orders" className="w-full">
-            <Button variant="outline" className="w-full">View Order Details</Button>
+            <div className="w-full">
+              <Button variant="outline" className="w-full">View Order Details</Button>
+            </div>
           </Link>
           <Link href="/products" className="w-full">
-            <Button className="w-full">Continue Shopping</Button>
+            <div className="w-full">
+              <Button className="w-full">Continue Shopping</Button>
+            </div>
           </Link>
         </CardFooter>
       </Card>
