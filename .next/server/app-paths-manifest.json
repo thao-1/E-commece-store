@@ -1,1 +1,23 @@
-{}
+{
+  "/api/auth/logout/route": "app/api/auth/logout/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/api/chat/conversations/route": "app/api/chat/conversations/route.js",
+  "/api/login/route": "app/api/login/route.js",
+  "/api/chat/messages/route": "app/api/chat/messages/route.js",
+  "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/auth/register/route": "app/api/auth/register/route.js",
+  "/api/orders/[id]/route": "app/api/orders/[id]/route.js",
+  "/api/products/[id]/route": "app/api/products/[id]/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/api/vendors/register/route": "app/api/vendors/register/route.js",
+  "/api/vendors/[id]/route": "app/api/vendors/[id]/route.js",
+  "/api/vendors/route": "app/api/vendors/route.js",
+  "/(main)/chat/page": "app/(main)/chat/page.js",
+  "/toast-demo/page": "app/toast-demo/page.js",
+  "/checkout/success/page": "app/checkout/success/page.js",
+  "/checkout/page": "app/checkout/page.js",
+  "/page": "app/page.js",
+  "/api/socket/route": "app/api/socket/route.js"
+}

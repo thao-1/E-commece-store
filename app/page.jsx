@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import FeaturedProducts from "@/components/products/featured-products";
-import CategoryCarousel from "@/components/ui/category-carousel";
+import { CategoryCarousel } from "@/components/ui/category-carousel";
 import TopVendors from "@/components/vendor/top-vendors";
 import LatestProducts from "@/components/products/latest-products";
-import PromoSection from "@/components/ui/promo-section";
+import { PromoSection } from "@/components/ui/promo-section";
 
 export default function HomePage() {
   return (
