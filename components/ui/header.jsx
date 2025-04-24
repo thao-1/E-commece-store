@@ -6,13 +6,13 @@ import { usePathname } from 'next/navigation';
 import { Search, ShoppingCart, User, Menu, X, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
@@ -38,7 +38,7 @@ export default function Header() {
       try {
         const res = await fetch('/api/auth/me');
         const data = await res.json();
-        
+
         if (data.success) {
           setUser(data.user);
         }
@@ -88,6 +88,7 @@ export default function Header() {
     { name: 'Categories', href: '/categories' },
     { name: 'Deals', href: '/deals' },
     { name: 'Vendors', href: '/vendors' },
+    { name: 'Messages', href: '/messages' },
   ];
 
   return (
@@ -97,10 +98,10 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <img 
-                src="/images/logo.png" 
-                alt="Marketplace Logo" 
-                className="h-8 w-auto mr-2" 
+              <img
+                src="/images/logo.png"
+                alt="Marketplace Logo"
+                className="h-8 w-auto mr-2"
               />
               <span className="font-bold text-xl text-orange-600">MarketPlace</span>
             </Link>
@@ -109,7 +110,7 @@ export default function Header() {
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex space-x-8">
             {navLinks.map((link) => (
-              <Link 
+              <Link
                 key={link.name}
                 href={link.href}
                 className={`text-sm font-medium hover:text-orange-500 transition-colors ${
@@ -132,9 +133,9 @@ export default function Header() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-              <Button 
-                type="submit" 
-                size="sm" 
+              <Button
+                type="submit"
+                size="sm"
                 className="absolute right-1 top-1 rounded-full bg-orange-500 hover:bg-orange-600 text-white"
               >
                 Search
@@ -244,7 +245,7 @@ export default function Header() {
                       </Button>
                     </SheetTrigger>
                   </div>
-                  
+
                   {/* Mobile Search */}
                   <div className="py-4">
                     <form onSubmit={handleSearch} className="relative">
@@ -258,11 +259,11 @@ export default function Header() {
                       <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                     </form>
                   </div>
-                  
+
                   {/* Mobile Navigation */}
                   <nav className="flex flex-col space-y-4 mt-4">
                     {navLinks.map((link) => (
-                      <Link 
+                      <Link
                         key={link.name}
                         href={link.href}
                         className={`text-base font-medium hover:text-orange-500 transition-colors ${
@@ -273,7 +274,7 @@ export default function Header() {
                       </Link>
                     ))}
                   </nav>
-                  
+
                   {/* Mobile User Actions */}
                   <div className="mt-auto pb-8">
                     {user ? (
@@ -303,7 +304,7 @@ export default function Header() {
                               Vendor Dashboard
                             </Link>
                           )}
-                          <button 
+                          <button
                             onClick={handleLogout}
                             className="block w-full px-4 py-2 text-sm text-red-600 rounded-md hover:bg-red-50 text-left"
                           >
