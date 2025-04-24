@@ -1,87 +1,104 @@
+// src/components/chat/message-input.tsx
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Send } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Send, Paperclip, Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 interface MessageInputProps {
-  onSendMessage: (message: string) => void;
-  onTyping: () => void;
-  onStopTyping: () => void;
+  onSend: (content: string) => void;
+  onTyping: (isTyping: boolean) => void;
 }
 
-export function MessageInput({ onSendMessage, onTyping, onStopTyping }: MessageInputProps) {
+export function MessageInput({ onSend, onTyping }: MessageInputProps) {
   const [message, setMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isTypingTimeout, setIsTypingTimeout] = useState<NodeJS.Timeout | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
-  // Handle typing indicator with debounce
-  useEffect(() => {
-    if (message && !isTyping) {
-      setIsTyping(true);
-      onTyping();
-    }
+
+  const handleTyping = () => {
+    onTyping(true);
     
     // Clear previous timeout
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
+    if (isTypingTimeout) {
+      clearTimeout(isTypingTimeout);
     }
     
-    // Set new timeout
-    typingTimeoutRef.current = setTimeout(() => {
-      if (isTyping) {
-        setIsTyping(false);
-        onStopTyping();
-      }
+    // Set a new timeout
+    const timeout = setTimeout(() => {
+      onTyping(false);
     }, 1000);
     
-    return () => {
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
-    };
-  }, [message, isTyping, onTyping, onStopTyping]);
-  
-  // Handle sending message
-  const handleSendMessage = () => {
+    setIsTypingTimeout(timeout);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+    handleTyping();
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
     if (message.trim()) {
-      onSendMessage(message);
+      onSend(message);
       setMessage("");
       
-      // Focus back on textarea
-      if (textareaRef.current) {
-        textareaRef.current.focus();
+      // Clear typing indicator
+      if (isTypingTimeout) {
+        clearTimeout(isTypingTimeout);
       }
+      onTyping(false);
+      
+      // Focus back on textarea
+      textareaRef.current?.focus();
     }
   };
-  
-  // Handle key press (Enter to send, Shift+Enter for new line)
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      handleSubmit(e);
     }
   };
-  
+
   return (
-    <div className="flex items-end gap-2">
-      <Textarea
-        ref={textareaRef}
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleKeyPress}
-        placeholder="Type your message..."
-        className="flex-1 min-h-[80px] max-h-[160px] resize-none"
-      />
-      <Button 
-        onClick={handleSendMessage}
-        disabled={!message.trim()}
-        className="bg-orange-500 hover:bg-orange-600 h-10 w-10 p-0"
-      >
-        <Send className="h-5 w-5" />
-      </Button>
-    </div>
+    <form onSubmit={handleSubmit} className="border-t p-3">
+      <div className="flex items-end gap-2">
+        <Button 
+          type="button" 
+          variant="ghost" 
+          size="icon" 
+          className="h-9 w-9 flex-shrink-0"
+        >
+          <Paperclip className="h-5 w-5" />
+        </Button>
+        <Textarea
+          ref={textareaRef}
+          value={message}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Type a message..."
+          className="min-h-10 max-h-32 resize-none"
+          rows={1}
+        />
+        <Button 
+          type="button" 
+          variant="ghost" 
+          size="icon" 
+          className="h-9 w-9 flex-shrink-0"
+        >
+          <Smile className="h-5 w-5" />
+        </Button>
+        <Button 
+          type="submit" 
+          size="icon" 
+          className="h-9 w-9 flex-shrink-0"
+          disabled={!message.trim()}
+        >
+          <Send className="h-5 w-5" />
+        </Button>
+      </div>
+    </form>
   );
 }
